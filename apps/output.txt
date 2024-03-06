@@ -1,0 +1,4 @@
+FS Ls:
+file: file1, size: 0, data_blk: 65535
+0: 0
+FS Ls:

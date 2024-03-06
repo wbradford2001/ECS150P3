@@ -1,0 +1,3 @@
+DELETE	file_fs
+DELETE	file2_fs
+UMOUNT
