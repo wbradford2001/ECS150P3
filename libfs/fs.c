@@ -327,7 +327,7 @@ int fs_mount(const char *diskname)
 		}
 	}
 	//number of FAT spaces is the number of fat blocks times (4096\2) spaces per fat block
-	superBlock.num_fat_spaces = (4096/2) * superBlock.fat_blk_count;
+	superBlock.num_fat_spaces = superBlock.data_blk_count;
 
 
 
