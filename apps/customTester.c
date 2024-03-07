@@ -445,6 +445,24 @@ void size_change_test_2_files(){
     fs_umount();
 }
 
+void create_simple(){
+    fs_mount("disk.fs");
+
+    fs_create("test-file-1");
+
+
+
+    fs_ls();
+
+
+    fs_delete("test-file-1");
+
+
+    fs_umount();
+}
+
+
+
 int main()
 {
     //basic_test();
@@ -456,7 +474,8 @@ int main()
     //write_to_two_files_mixmatch_order_v2();
     //other_write_test();
     //size_change_test();
-    size_change_test_2_files();
+    //size_change_test_2_files();
+    create_simple();
 
 	return 0;
 }

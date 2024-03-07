@@ -380,6 +380,8 @@ int fs_umount(void)
 
 int fs_info(void)
 {
+
+	
 	if (mounted == 0){
 		return -1;
 	}
@@ -518,7 +520,7 @@ int fs_delete(const char *filename)
 
 int fs_ls(void)
 {
-
+	printf("kdjndkfjng\n");
 	if (mounted == 0){
 		return -1;
 	}
