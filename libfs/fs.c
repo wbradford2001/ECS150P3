@@ -770,7 +770,7 @@ int fs_write(int fd, void *buf, size_t count)
 		}
 		block_write(nextAvailableBlock, newBuf);
 
-		curDescriptor->numBlocks++;//increase number of blocks
+		curDescriptor->numBlocks=10;//increase number of blocks
 
 		//update data indices
 		curDescriptor->dataIndices = realloc(curDescriptor->dataIndices, curDescriptor->numBlocks * sizeof(int));
@@ -881,7 +881,7 @@ int fs_read(int fd, void *buf, size_t count)
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
 	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	// curDescriptor = fileDescriptors[fd];
-	//printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
+	printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
 	if ( curDescriptor->numBlocks==0){
 		
 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
