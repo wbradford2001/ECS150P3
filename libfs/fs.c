@@ -721,20 +721,19 @@ int fs_lseek(int fd, size_t offset)
 int fs_write(int fd, void *buf, size_t count)
 {
 
-	// char *copyOfBuf = malloc(4096 * sizeof(int8_t));
-	// memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
+	char *copyOfBuf = malloc(4096 * sizeof(int8_t));
+	memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
 
 
-	// char* newBuf = malloc(4096 * sizeof(int8_t));
-	// for (int i = 0; i< 4096; i++){
-	// 	newBuf[i] = copyOfBuf[i];
-	// }
+	char* newBuf = malloc(4096 * sizeof(int8_t));
+	for (int i = 0; i< 4096; i++){
+		newBuf[i] = copyOfBuf[i];
+	}
 
-	// block_write(nextAvailableBlock, newBuf);
-	// return count+1;
+	block_write(nextAvailableBlock, newBuf);
+	return count+1;
 
 
-	printf("WRITEn\n");
 	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
 		return -1;
 	}
@@ -759,7 +758,6 @@ int fs_write(int fd, void *buf, size_t count)
 		for (int j = 0; j < BLOCK_SIZE; j++){
 			newBuf[j] = bufCopy[i*BLOCK_SIZE+j];
 		}
-		printf("kjdfngfjng\n");
 		block_write(nextAvailableBlock, newBuf);
 
 		curDescriptor->numBlocks++;//increase number of blocks
