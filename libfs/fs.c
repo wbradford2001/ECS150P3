@@ -873,7 +873,9 @@ int fs_write(int fd, void *buf, size_t count)
 int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
-	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
+	// struct fileDescriptor *curDescriptor = 
+	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
+	curDescriptor = fileDescriptors[fd];
 	//printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
 
 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
