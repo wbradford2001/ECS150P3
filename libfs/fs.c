@@ -870,7 +870,7 @@ int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
-	block_read(3, buf);
+	block_read(4, buf);
 	//printf("read; %s\n", buf);
 	// for (int i = 0; i < curDescriptor->numBlocks; i++){
 	// 	//read into buffer tempBuf
