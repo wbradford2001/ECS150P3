@@ -751,7 +751,7 @@ int fs_write(int fd, void *buf, size_t count)
 	int ret = 0;
 
 	//get current file descriptor
-	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
+	struct fileDescriptor *curDescriptor;
 	curDescriptor = fileDescriptors[fd];
 
 	//total number of blocks to write
