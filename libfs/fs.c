@@ -48,7 +48,7 @@ void decimalTo8BitBinary(char * newStr, int num) {
 
         newStr[i]= '0';
 		}
-		return NULL;
+		return;
     }
    
    // Stores binary representation of number.
@@ -73,7 +73,7 @@ void decimalTo8BitBinary(char * newStr, int num) {
 
 void decimalTo32BitBinary(char * newStr, int num) {   
     if (num == 0) {
-        return NULL;
+        return;
     }
    
    // Stores binary representation of number.
@@ -98,7 +98,7 @@ void decimalTo32BitBinary(char * newStr, int num) {
 
 void decimalTo16BitBinary(char * newStr, int num) {   
     if (num == 0) {
-        return NULL;
+        return;
     }
    
    // Stores binary representation of number.
