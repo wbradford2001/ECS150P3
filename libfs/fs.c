@@ -724,7 +724,8 @@ int fs_write(int fd, void *buf, size_t count)
 		return -1;
 	}
 
-
+	block_write(nextAvailableBlock, buf);
+	return 0;
 	int ret = 0;
 
 	//get current file descriptor
