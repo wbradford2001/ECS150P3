@@ -766,7 +766,7 @@ int fs_write(int fd, void *buf, size_t count)
 		//update data indices
 		curDescriptor->dataIndices = realloc(curDescriptor->dataIndices, curDescriptor->numBlocks * sizeof(int));
 		curDescriptor->dataIndices[curDescriptor->numBlocks-1] = nextAvailableBlock;
-		printf("%d\n", nextAvailableBlock);
+		//printf("%d\n", nextAvailableBlock);
 		//each time you write, increase the block that you write to
 		nextAvailableBlock++;
 
@@ -875,7 +875,12 @@ int fs_read(int fd, void *buf, size_t count)
 	for (int i = 0; i < curDescriptor->numBlocks; i++){
 		//read into buffer tempBuf
 		void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-		block_read(curDescriptor->dataIndices[i], tempBuf);
+		if (curDescriptor->dataIndices[i]==0){
+			block_read(4, tempBuf);
+			
+		} else {
+			block_read(curDescriptor->dataIndices[i], tempBuf);
+		}
 
 		//add tempBuf to but
 		strcat(buf, tempBuf);
