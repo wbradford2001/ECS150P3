@@ -721,8 +721,8 @@ int fs_lseek(int fd, size_t offset)
 int fs_write(int fd, void *buf, size_t count)
 {
 
-	//char *copyOfBuf = malloc(sizeof(buf));
-	//memcpy(copyOfBuf, buf, sizeof(buf));
+	char *copyOfBuf = malloc(4096 * sizeof(int8_t));
+	memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
 
 
 	char* newBuf = malloc(4096 * sizeof(int8_t));
