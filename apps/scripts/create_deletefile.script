@@ -1,4 +1,8 @@
 MOUNT
 CREATE	file_fs
+OPEN	file_fs
+WRITE	FILE	test_file
+READ	4096	FILE	test_file
+CLOSE
 DELETE	file_fs
 UMOUNT
