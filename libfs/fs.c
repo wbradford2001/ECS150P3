@@ -875,7 +875,7 @@ int fs_read(int fd, void *buf, size_t count)
 	for (int i = 0; i < curDescriptor->numBlocks; i++){
 		//read into buffer tempBuf
 		void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-		if (curDescriptor->dataIndices[i]==0){
+		if (curDescriptor->dataIndices[i]==1){
 			block_read(4, tempBuf);
 			
 		} else {
