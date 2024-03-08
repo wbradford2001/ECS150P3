@@ -724,7 +724,7 @@ int fs_write(int fd, void *buf, size_t count)
 		return -1;
 	}
 
-	block_write(nextAvailableBlock, buf);
+	block_write(superBlock.data_blk, buf);
 	return 0;
 	int ret = 0;
 
