@@ -756,7 +756,7 @@ int fs_write(int fd, void *buf, size_t count)
 		//copt the current chunk of 4096 bits from bufCopy to newBuf
 		int8_t *newBuf = malloc(BLOCK_SIZE * 8);
 		for (int j = 0; j < BLOCK_SIZE; j++){
-			newBuf[j] = bufCopy[j];
+			newBuf[j] = bufCopy[i*BLOCK_SIZE+j];
 		}
 		block_write(nextAvailableBlock, newBuf);
 
