@@ -171,11 +171,14 @@ static int mounted = 0;//tells the program if a disk has been mounted or not
 char** fileNameList;//list of char* filename's to keep track of which files have already been opened
 int fs_mount(const char *diskname)
 {
-	
+	//printf("FS_MOUNT: %d\n", mounted);
+	if (mounted==1){
+		return 0;
+	}
 	//open the block fro disk
-	if (block_disk_open(diskname)){
-		return -1;
-	};
+	//printf("mountin\n");
+	block_disk_open(diskname);
+	//printf("done mounting\n");
 
 	//read block into buffer "buf"
 	int8_t *buf = malloc(BLOCK_SIZE*sizeof(int8_t));
@@ -187,7 +190,9 @@ int fs_mount(const char *diskname)
 	/* --------------------------------------------------------------------------------------------- */
 	char* string= "ECS150FS";
 	for (int i=0;i<8;i++){
+		//printf("%c\n", buf[i]);
 		if (buf[i]!=string[i]){
+			//printf("signature not epresent\n");
 			return -1;
 		}
 	}
@@ -353,12 +358,15 @@ int fs_mount(const char *diskname)
 
 	fileNameList =  malloc(0*sizeof(char*));
 
+	//printf("DONE FS_MOUNT\n");
 	return 0;
 
 }
 
 int fs_umount(void)
 {
+	block_disk_close();
+	return 0;
 	//write meta data to disk
 	int8_t *rootBlk = malloc(BLOCK_SIZE*sizeof(int8_t));
 	block_read(superBlock.rdir_blk, rootBlk);
@@ -406,7 +414,7 @@ int fs_create(const char *filename)
 		return -1;
 	}
 
-
+	//printf("FS_CREATE\n");
 		//check that file exists
 	int contains = 0;
 	for (int i = 0; i < fileIndex/32; i++){
@@ -458,6 +466,7 @@ int fs_create(const char *filename)
 
 	fileNameList[fileIndex/32-1] = newFile;
 		//printf("%d: %s\n", fileIndex/32-1,  fileNameList[fileIndex/32+1]);
+
 
 
 	return 0;
@@ -520,7 +529,6 @@ int fs_delete(const char *filename)
 
 int fs_ls(void)
 {
-	printf("kdjndkfjng\n");
 	if (mounted == 0){
 		return -1;
 	}
@@ -638,6 +646,7 @@ int fs_ls(void)
 
 int fs_open(const char *filename)
 {
+	//printf("FS_OPEN\n");
 	if (mounted==0){
 		return -1;
 	}
@@ -668,7 +677,9 @@ int fs_open(const char *filename)
 					return i/32;
 				}
 		}
+
 	}
+
 	//if we've reached here, the file is not found
 	return -1;
 }
@@ -712,6 +723,11 @@ int fs_write(int fd, void *buf, size_t count)
 	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
 		return -1;
 	}
+	//printf("FS_WRITE\n");
+
+
+
+
 	//get current file descriptor
 	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	curDescriptor = fileDescriptors[fd];
@@ -831,6 +847,7 @@ int fs_write(int fd, void *buf, size_t count)
 
 	}
 	
+
 
 	return 0;
 }
