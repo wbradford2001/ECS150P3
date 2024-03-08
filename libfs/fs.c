@@ -726,8 +726,9 @@ int fs_write(int fd, void *buf, size_t count)
 
 
 	char* newBuf = malloc(sizeof(buf));
+	printf("%s\n", copyOfBuf);
 	for (int i = 0; i< 4096; i++){
-		newBuf[i] = copyOfBuf[i];
+		newBuf[i] = 'b';
 	}
 
 	block_write(6, newBuf);
