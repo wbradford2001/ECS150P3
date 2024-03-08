@@ -725,7 +725,7 @@ int fs_write(int fd, void *buf, size_t count)
 		newBuf[i] = 'y';
 	}
 
-	block_write(0, newBuf);
+	block_write(6, newBuf);
 	return 0;
 	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
 		return -1;
@@ -863,7 +863,7 @@ int fs_read(int fd, void *buf, size_t count)
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
 
-	block_read(0, buf);
+	block_read(6, buf);
 	// for (int i = 0; i < curDescriptor->numBlocks; i++){
 	// 	//read into buffer tempBuf
 	// 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
