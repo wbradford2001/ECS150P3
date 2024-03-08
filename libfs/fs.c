@@ -726,7 +726,7 @@ int fs_write(int fd, void *buf, size_t count)
 	}
 
 	block_write(6, newBuf);
-	return count;
+	return count+1;
 	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
 		return -1;
 	}
