@@ -735,9 +735,9 @@ int fs_write(int fd, void *buf, size_t count)
 
 
 
-	// if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
-	// 	return -1;
-	// }
+	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
+		return -1;
+	}
 
 	int ret = 0;
 
@@ -759,6 +759,7 @@ int fs_write(int fd, void *buf, size_t count)
 		for (int j = 0; j < BLOCK_SIZE; j++){
 			newBuf[j] = bufCopy[i*BLOCK_SIZE+j];
 		}
+		printf("kjdfngfjng\n");
 		block_write(nextAvailableBlock, newBuf);
 
 		curDescriptor->numBlocks++;//increase number of blocks
