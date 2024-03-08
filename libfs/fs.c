@@ -868,7 +868,7 @@ int fs_write(int fd, void *buf, size_t count)
 
 int fs_read(int fd, void *buf, size_t count)
 {
-	printf("FS_READ\n");
+	printf("FS_READ: %d\n", curDescriptor->dataIndices[0]);
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
 	// void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
