@@ -862,8 +862,8 @@ int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
-	printf("Hello\n");
 	block_read(6, buf);
+	printf("%s\n", buf);
 	// for (int i = 0; i < curDescriptor->numBlocks; i++){
 	// 	//read into buffer tempBuf
 	// 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
