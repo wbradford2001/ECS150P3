@@ -731,7 +731,8 @@ int fs_write(int fd, void *buf, size_t count)
 	}
 
 	block_write(nextAvailableBlock, newBuf);
-	struct fileDescriptor *newDescriptor = fileDescriptors[fd];
+	struct fileDescriptor *newDescriptor = malloc(sizeof(struct fileDescriptor));
+	newDescriptor = fileDescriptors[fd];
 	newDescriptor->dataIndices = realloc(newDescriptor->dataIndices, newDescriptor->numBlocks * sizeof(int));
 	newDescriptor->dataIndices[newDescriptor->numBlocks-1] = nextAvailableBlock;
 	nextAvailableBlock++;
