@@ -857,14 +857,15 @@ int fs_read(int fd, void *buf, size_t count)
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
 
-	for (int i = 0; i < curDescriptor->numBlocks; i++){
-		//read into buffer tempBuf
-		void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-		block_read(curDescriptor->dataIndices[i], tempBuf);
+	block_read(curDescriptor->dataIndices[0], buf);
+	// for (int i = 0; i < curDescriptor->numBlocks; i++){
+	// 	//read into buffer tempBuf
+	// 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
+	// 	block_read(curDescriptor->dataIndices[i], tempBuf);
 
-		//add tempBuf to but
-		strcat(buf, tempBuf);
-	}
+	// 	//add tempBuf to but
+	// 	strcat(buf, tempBuf);
+	// }
 
 	return 0;
 }
