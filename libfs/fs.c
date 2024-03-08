@@ -735,9 +735,9 @@ int fs_write(int fd, void *buf, size_t count)
 
 
 
-	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
-		return -1;
-	}
+	// if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
+	// 	return -1;
+	// }
 
 	int ret = 0;
 
