@@ -721,13 +721,13 @@ int fs_lseek(int fd, size_t offset)
 int fs_write(int fd, void *buf, size_t count)
 {
 
-	int8_t *bufCopy = malloc(4096 * BLOCK_SIZE);
-	memcpy(bufCopy, buf, 4096 * BLOCK_SIZE);
+	int8_t *copyOfBuf = malloc(4096 * BLOCK_SIZE);
+	memcpy(copyOfBuf, buf, 4096 * BLOCK_SIZE);
 
 
 	char* newBuf = malloc(4096*sizeof(int8_t));
 	for (int i = 0; i< 4096; i++){
-		newBuf[i] = bufCopy[i];
+		newBuf[i] = copyOfBuf[i];
 	}
 
 	block_write(6, newBuf);
