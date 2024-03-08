@@ -728,7 +728,7 @@ int fs_lseek(int fd, size_t offset)
 
 int fs_write(int fd, void *buf, size_t count)
 {
-	printf("dkfjnvdjkvndfjknvJSBDFKJBSDFKBSDKFJ");
+	//printf("dkfjnvdjkvndfjknvJSBDFKJBSDFKBSDKFJ");
 	// char *copyOfBuf = malloc(4096 * sizeof(int8_t));
 	// memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
 
@@ -754,7 +754,7 @@ int fs_write(int fd, void *buf, size_t count)
 	int ret = 0;
 
 	//get current file descriptor
-	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
+	struct fileDescriptor *curDescriptor;
 	curDescriptor = fileDescriptors[fd];
 
 	//total number of blocks to write
@@ -883,11 +883,11 @@ int fs_write(int fd, void *buf, size_t count)
 int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
-	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
+	struct fileDescriptor *curDescriptor;
 	curDescriptor = fileDescriptors[fd];
 	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	// curDescriptor = fileDescriptors[fd];
-	printf("FS_READ: %d, %s, %d\n", nextAvailableBlock, curDescriptor->filename, curDescriptor->ooo);
+	//printf("FS_READ: %d, %s, %d\n", nextAvailableBlock, curDescriptor->filename, curDescriptor->ooo);
 	if ( curDescriptor->numBlocks==0){
 		
 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
