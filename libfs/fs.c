@@ -721,18 +721,17 @@ int fs_lseek(int fd, size_t offset)
 int fs_write(int fd, void *buf, size_t count)
 {
 
-	// char *copyOfBuf = malloc(4096 * sizeof(int8_t));
-	// memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
+	char *copyOfBuf = malloc(4096 * sizeof(int8_t));
+	memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
 
 
-	// char* newBuf = malloc(4096 * sizeof(int8_t));
-	// //printf("%s\n", copyOfBuf);
-	// for (int i = 0; i< 4096; i++){
-	// 	newBuf[i] = copyOfBuf[i];
-	// }
+	char* newBuf = malloc(4096 * sizeof(int8_t));
+	for (int i = 0; i< 4096; i++){
+		newBuf[i] = copyOfBuf[i];
+	}
 
-	// block_write(nextAvailableBlock, newBuf);
-	// return count+1;
+	block_write(nextAvailableBlock, newBuf);
+	return count+1;
 
 
 
@@ -750,8 +749,8 @@ int fs_write(int fd, void *buf, size_t count)
 	int numBlocksToWrite = ((int)count / 4096);
 
 	//we create a copy of buf called bufCopy because we can't dereference a void pointer, so we caste it as int8_t
-	int8_t *bufCopy = malloc(numBlocksToWrite * BLOCK_SIZE);
-	memcpy(bufCopy, buf, numBlocksToWrite * BLOCK_SIZE);
+	int8_t *bufCopy = malloc(numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
+	memcpy(bufCopy, buf, numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
 	//write each block. Note that we write a buffer called newBuf which is of size 4096. The actual buffer(bufCopy) could be larger, so we only write in chunks of 4096 at a time
 	for (int i = 0; i < numBlocksToWrite; i++){
 		//copt the current chunk of 4096 bits from bufCopy to newBuf
