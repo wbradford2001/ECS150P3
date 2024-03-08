@@ -762,7 +762,7 @@ int fs_write(int fd, void *buf, size_t count)
 	int8_t *bufCopy = malloc(numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
 	memcpy(bufCopy, buf, numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
 	//write each block. Note that we write a buffer called newBuf which is of size 4096. The actual buffer(bufCopy) could be larger, so we only write in chunks of 4096 at a time
-	for (int i = 0; i < numBlocksToWrite+1; i++){
+	for (int i = 0; i < numBlocksToWrite; i++){
 		//copt the current chunk of 4096 bits from bufCopy to newBuf
 		int8_t *newBuf = malloc(BLOCK_SIZE * 8);
 		for (int j = 0; j < BLOCK_SIZE; j++){
