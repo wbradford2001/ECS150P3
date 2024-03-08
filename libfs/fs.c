@@ -721,22 +721,22 @@ int fs_lseek(int fd, size_t offset)
 int fs_write(int fd, void *buf, size_t count)
 {
 
-	char *copyOfBuf = malloc(4096 * sizeof(int8_t));
-	memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
+	// char *copyOfBuf = malloc(4096 * sizeof(int8_t));
+	// memcpy(copyOfBuf, buf, 4096 * sizeof(int8_t));
 
 
-	char* newBuf = malloc(4096 * sizeof(int8_t));
-	for (int i = 0; i< 4096; i++){
-		newBuf[i] = copyOfBuf[i];
-	}
+	// char* newBuf = malloc(4096 * sizeof(int8_t));
+	// for (int i = 0; i< 4096; i++){
+	// 	newBuf[i] = copyOfBuf[i];
+	// }
 
-	block_write(nextAvailableBlock, newBuf);
-	struct fileDescriptor *newDescriptor = malloc(sizeof(struct fileDescriptor));
-	newDescriptor = fileDescriptors[fd];
-	newDescriptor->dataIndices = realloc(newDescriptor->dataIndices, newDescriptor->numBlocks * sizeof(int));
-	newDescriptor->dataIndices[newDescriptor->numBlocks-1] = nextAvailableBlock;
-	nextAvailableBlock++;
-	return count+1;
+	// block_write(nextAvailableBlock, newBuf);
+	// struct fileDescriptor *newDescriptor = malloc(sizeof(struct fileDescriptor));
+	// newDescriptor = fileDescriptors[fd];
+	// newDescriptor->dataIndices = realloc(newDescriptor->dataIndices, newDescriptor->numBlocks * sizeof(int));
+	// newDescriptor->dataIndices[newDescriptor->numBlocks-1] = nextAvailableBlock;
+	// nextAvailableBlock++;
+	// return count+1;
 
 
 	if (fileDescriptors[fd]==NULL || buf == NULL || fd < 0 || fd >= 32 || mounted == 0){
@@ -873,15 +873,15 @@ int fs_write(int fd, void *buf, size_t count)
 int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
-	// struct fileDescriptor *curDescriptor = 
-	struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
-	curDescriptor = fileDescriptors[fd];
-	//printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
+	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
+	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
+	// curDescriptor = fileDescriptors[fd];
+	// //printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
 
-	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-	block_read(curDescriptor->dataIndices[0], tempBuf);
-	strcat(buf, tempBuf);
-	return count;
+	// void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
+	// block_read(curDescriptor->dataIndices[0], tempBuf);
+	// strcat(buf, tempBuf);
+	// return count;
 	//printf("read; %s\n", buf);
 	for (int i = 0; i < curDescriptor->numBlocks; i++){
 		// read into buffer tempBuf
