@@ -746,7 +746,7 @@ int fs_write(int fd, void *buf, size_t count)
 	curDescriptor = fileDescriptors[fd];
 
 	//total number of blocks to write
-	int numBlocksToWrite = ((int)count / 4096);
+	int numBlocksToWrite = 1;
 	//printf("%d\n", numBlocksToWrite);
 
 	//we create a copy of buf called bufCopy because we can't dereference a void pointer, so we caste it as int8_t
