@@ -877,11 +877,13 @@ int fs_read(int fd, void *buf, size_t count)
 	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	// curDescriptor = fileDescriptors[fd];
 	//printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
-
+	if ( curDescriptor->numBlocks==0){
+		
 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
 	block_read(4, tempBuf);
 	strcat(buf, tempBuf);
 	return count;
+	}
 	//printf("read; %s\n", buf);
 	for (int i = 0; i < curDescriptor->numBlocks; i++){
 		// read into buffer tempBuf
