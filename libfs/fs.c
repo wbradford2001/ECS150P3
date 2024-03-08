@@ -868,25 +868,26 @@ int fs_write(int fd, void *buf, size_t count)
 
 int fs_read(int fd, void *buf, size_t count)
 {
+	printf("FS_READ\n");
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
-	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-	block_read(4, tempBuf);
-	strcat(buf, tempBuf);
+	// void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
+	// block_read(4, tempBuf);
+	// strcat(buf, tempBuf);
 	//printf("read; %s\n", buf);
-	// for (int i = 0; i < curDescriptor->numBlocks; i++){
-	// 	read into buffer tempBuf
-	// 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-	// 	if (curDescriptor->dataIndices[i]==NULL){
-	// 		block_read(4, tempBuf);
+	for (int i = 0; i < curDescriptor->numBlocks; i++){
+		// read into buffer tempBuf
+		void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
+		if (curDescriptor->dataIndices[i]==NULL){
+			block_read(4, tempBuf);
 			
-	// 	} else {
-	// 		block_read(curDescriptor->dataIndices[i], tempBuf);
-	// 	}
+		} else {
+			block_read(curDescriptor->dataIndices[i], tempBuf);
+		}
 
-	// 	add tempBuf to but
-	// 	strcat(buf, tempBuf);
-	// }
+		// add tempBuf to but
+		strcat(buf, tempBuf);
+	}
 
 	return count;
 }
