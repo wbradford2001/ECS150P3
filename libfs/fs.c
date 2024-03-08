@@ -731,7 +731,7 @@ int fs_write(int fd, void *buf, size_t count)
 		newBuf[i] = copyOfBuf[i];
 	}
 
-	block_write(6, newBuf);
+	block_write(nextAvailableBlock, newBuf);
 	return count+1;
 
 
@@ -871,7 +871,7 @@ int fs_read(int fd, void *buf, size_t count)
 {
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
-	block_read(6, buf);
+	block_read(nextAvailableBlock, buf);
 	//printf("read; %s\n", buf);
 	// for (int i = 0; i < curDescriptor->numBlocks; i++){
 	// 	//read into buffer tempBuf
