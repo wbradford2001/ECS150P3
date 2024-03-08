@@ -876,7 +876,7 @@ int fs_read(int fd, void *buf, size_t count)
 	struct fileDescriptor *curDescriptor = fileDescriptors[fd];
 	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	// curDescriptor = fileDescriptors[fd];
-	// //printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
+	//printf("FS_READ: %d, %s, %d\n", curDescriptor->dataIndices[0], curDescriptor->filename, curDescriptor->numBlocks);
 
 	// void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
 	// block_read(curDescriptor->dataIndices[0], tempBuf);
@@ -886,12 +886,12 @@ int fs_read(int fd, void *buf, size_t count)
 	for (int i = 0; i < curDescriptor->numBlocks; i++){
 		// read into buffer tempBuf
 		void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-		if (curDescriptor->dataIndices[0]==0){
-			block_read(4, tempBuf);
+		// if (curDescriptor->dataIndices[0]==0){
+		// 	block_read(4, tempBuf);
 			
-		} else {
+		// } else {
+		// }
 			block_read(curDescriptor->dataIndices[i], tempBuf);
-		}
 
 		// add tempBuf to but
 		strcat(buf, tempBuf);
