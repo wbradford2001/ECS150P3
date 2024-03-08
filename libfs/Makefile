@@ -11,7 +11,7 @@ endif
 objects := fs.o disk.o
 
 CC := gcc
-CFlags := -Wall -Wextra -MMD
+CFlags := -Wall -Werror -Wextra -MMD
 
 
 #dependency tracking

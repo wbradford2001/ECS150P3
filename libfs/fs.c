@@ -42,7 +42,7 @@ int BinaryToDecimal(char* newStr, int length) {
 
 //https://www.scaler.com/topics/decimal-to-binary-in-c/
 //function that converts decimal to binary string of 0s and 1s
-char* decimalTo8BitBinary(char * newStr, int num) {   
+void decimalTo8BitBinary(char * newStr, int num) {   
     if (num == 0) {
 		for (int i=0; i<8;i++){
 
@@ -71,7 +71,7 @@ char* decimalTo8BitBinary(char * newStr, int num) {
 		p++;	
    }}
 
-char* decimalTo32BitBinary(char * newStr, int num) {   
+void decimalTo32BitBinary(char * newStr, int num) {   
     if (num == 0) {
         return NULL;
     }
@@ -96,7 +96,7 @@ char* decimalTo32BitBinary(char * newStr, int num) {
 		p++;	
    }}   
 
-char* decimalTo16BitBinary(char * newStr, int num) {   
+void decimalTo16BitBinary(char * newStr, int num) {   
     if (num == 0) {
         return NULL;
     }
@@ -406,6 +406,9 @@ int fs_info(void)
 	//theres always 128 elements in the roof block
 	printf("rdir_free_ratio=%d/%d\n", 128 - superBlock.rdir_occupied, 128);
 
+
+	return 0;
+
 }
 
 int fs_create(const char *filename)
@@ -416,7 +419,7 @@ int fs_create(const char *filename)
 
 	//printf("FS_CREATE\n");
 		//check that file exists
-	int contains = 0;
+	
 	for (int i = 0; i < fileIndex/32; i++){
 		if (!strcmp(filename, fileNameList[i])){
 			return -1;}
@@ -642,6 +645,7 @@ int fs_ls(void)
 			}
 		}
 	}
+	return 0;
 }
 
 int fs_open(const char *filename)
@@ -672,7 +676,8 @@ int fs_open(const char *filename)
 					newDescriptor->size=0;
 					newDescriptor->numBlocks = 0;
 					newDescriptor->dataIndices = malloc(0*sizeof(int));
-					newDescriptor->filename = filename;
+					newDescriptor->filename = malloc(strlen(filename) * sizeof(char));
+					strcpy(newDescriptor->filename,filename);
 					fileDescriptors[i/32] = newDescriptor;
 					return i/32;
 				}
