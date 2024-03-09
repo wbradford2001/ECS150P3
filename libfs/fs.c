@@ -687,7 +687,6 @@ int fs_open(const char *filename)
 		}
 
 	}
-
 	//if we've reached here, the file is not found
 	return -1;
 }
@@ -757,13 +756,35 @@ int fs_write(int fd, void *buf, size_t count)
 	struct fileDescriptor *curDescriptor;
 	curDescriptor = fileDescriptors[fd];
 
-	//total number of blocks to write
+
 	int numBlocksToWrite = ((int)count / 4096);
+	int8_t *bufCopy = malloc(numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
+	memcpy(bufCopy, buf, numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
+
+	if (count < 4096){
+		// int8_t *newBuf = malloc(BLOCK_SIZE * 8);
+		// for (int j = 0; j < (int)count; j++){
+		// 	newBuf[j] = bufCopy[j];
+		// }
+		// for (int j = count; j < BLOCK_SIZE; j++){
+		// 	newBuf[j] = bufCopy[j];
+		// }
+		// block_write(3, newBuf);
+
+		//void *bu = malloc(4096 * sizeof(int8_t));
+		for (int i = 0; i< BLOCK_SIZE; i++){
+			//bu[i]=(void**)buf[i];
+		}
+		block_write(3,buf);		
+		
+		printf("written to block %d\n", 3);
+
+		return count;
+	}
+	//total number of blocks to write
 	//printf("%d\n", numBlocksToWrite);
 
 	//we create a copy of buf called bufCopy because we can't dereference a void pointer, so we caste it as int8_t
-	int8_t *bufCopy = malloc(numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
-	memcpy(bufCopy, buf, numBlocksToWrite * BLOCK_SIZE * sizeof(int8_t));
 	//write each block. Note that we write a buffer called newBuf which is of size 4096. The actual buffer(bufCopy) could be larger, so we only write in chunks of 4096 at a time
 	for (int i = 0; i < numBlocksToWrite; i++){
 		//copt the current chunk of 4096 bits from bufCopy to newBuf
@@ -875,19 +896,37 @@ int fs_write(int fd, void *buf, size_t count)
 	}
 	
 
-
 	return ret;
 }
 
 
 int fs_read(int fd, void *buf, size_t count)
 {
+
 	//get current fileDescriptor
 	struct fileDescriptor *curDescriptor;
 	curDescriptor = fileDescriptors[fd];
 	// struct fileDescriptor *curDescriptor = malloc(sizeof(struct fileDescriptor));
 	// curDescriptor = fileDescriptors[fd];
 	//printf("FS_READ: %d, %s, %d\n", nextAvailableBlock, curDescriptor->filename, curDescriptor->ooo);
+	if (count < 4096){
+
+			char* tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
+			block_read(3, tempBuf);
+			int8_t *buf2 = malloc(count * sizeof(int8_t));
+			for (int i = curDescriptor->lseek ; i< (int)curDescriptor->lseek + (int)count; i++){
+				//printf("%c\n", tempBuf[i]);
+				buf2[i-curDescriptor->lseek] = tempBuf[i];
+			}
+			// char* h;
+			// h = "hey there mate";
+
+			memcpy(buf, buf2, count);
+			//printf("read from block %d\n", 3);
+			return count;
+	}
+
+
 	if ( curDescriptor->numBlocks==0){
 		
 	void *tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));

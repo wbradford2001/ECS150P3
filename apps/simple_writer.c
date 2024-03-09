@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 	ret = fs_create("myfile");
 	ASSERT(!ret, "fs_create");
 
+
 	fd = fs_open("myfile");
 	ASSERT(fd >= 0, "fs_open");
 
