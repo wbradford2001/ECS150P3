@@ -559,7 +559,7 @@ int fs_ls(void)
 			}
 
 			//rest of string
-			if ((rootBlk[i+20] == -1 && rootBlk[i+21] == -1)|| (rootBlk[i+20] == 0 && rootBlk[i+21] == 0)){
+			if ((rootBlk[i+20] == -1 && rootBlk[i+21] == -1)|| (rootBlk[i+15] == 0 && rootBlk[i+15] == 0)){
 				printf(", size: %d, data_blk: %d\n",0, 65535);
 			} else {
 				/* ------------------------------------------------------------------------------------------ */
@@ -775,10 +775,93 @@ int fs_write(int fd, void *buf, size_t count)
 		for (int i = 0; i< BLOCK_SIZE; i++){
 			//bu[i]=(void**)buf[i];
 		}
-		block_write(3,buf);		
-		
-		printf("written to block %d\n", 3);
+		block_write(superBlock.data_blk,buf);		
 
+		//each time we write a block, we need to update the files size
+		int8_t *rootBlk = malloc(BLOCK_SIZE*sizeof(int8_t));
+		block_read(superBlock.rdir_blk, rootBlk);	
+		for (int block = 0; block < BLOCK_SIZE; block+=32){
+			for (int j = 0; j < (int)strlen(curDescriptor->filename); j++){
+					if (rootBlk[block+j] != curDescriptor->filename[j]){
+						break;
+					}
+					//if we have found a match
+					if (j == (int)strlen(curDescriptor->filename)-1){
+						/* ---------------------------------------------------------------------------------------- */
+						/*                                    UPDATE SIZE OF FILE                                   */
+						/* ---------------------------------------------------------------------------------------- */
+						int sizeOfFile = count;
+						//printf("sizeOfFile: %d\n", sizeOfFile);
+						char* Size_32_bit_String = malloc(32*sizeof(char));
+						decimalTo32BitBinary(Size_32_bit_String, sizeOfFile);
+
+						//store first 8 bits in string
+						char* first8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							first8bits[k] = Size_32_bit_String[k];
+						}
+
+						//printf("\n32 bit file size: %s", first8bits);
+						//store second 8 bits in string
+						char* second8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							second8bits[k] = Size_32_bit_String[k+8];
+						}			
+
+						//printf("%s", second8bits);
+
+						//store third 8 bits in string
+						char* third8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							third8bits[k] = Size_32_bit_String[k+16];
+						}		
+						//printf("%s", third8bits);
+						//store fourth 8 bits in string
+						char* fourth8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							fourth8bits[k] = Size_32_bit_String[k+24];
+						}																
+						//printf("%s", fourth8bits);
+						rootBlk[block+15] = BinaryToDecimal(fourth8bits, 8);
+						rootBlk[block+16] =  BinaryToDecimal(third8bits, 8);
+						rootBlk[block+17] =  BinaryToDecimal(second8bits, 8);
+						rootBlk[block+18] =  BinaryToDecimal(first8bits, 8);
+
+						//printf("\n%d,%d,%d,%d\n", BinaryToDecimal(fourth8bits, 8), BinaryToDecimal(third8bits, 8), BinaryToDecimal(second8bits, 8), BinaryToDecimal(first8bits, 8));
+
+						/* ---------------------------------------------------------------------------------------- */
+						/*                               UPDATE FIRST DATA BLOCK INDEX                              */
+						/* ---------------------------------------------------------------------------------------- */
+
+						int firstDataBlockIndex = superBlock.data_blk;
+						//printf("First Data Block: %d\n", firstDataBlockIndex);
+						char* Size_16_bit_String = malloc(32*sizeof(char));
+						decimalTo16BitBinary(Size_16_bit_String, firstDataBlockIndex);
+
+						//store first 8 bits in string
+						first8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							first8bits[k] = Size_16_bit_String[k];
+						}
+
+						//store second 8 bits in string
+						second8bits = malloc(8*sizeof(char));
+						for (int k = 0;k<8;k++ ){
+							second8bits[k] = Size_16_bit_String[k+8];
+						}			
+											
+
+						rootBlk[block+20] = BinaryToDecimal(second8bits, 8);
+						rootBlk[block+21] =  BinaryToDecimal(first8bits, 8);
+	
+
+						break;
+					}
+
+			}
+		}	
+		block_write(superBlock.rdir_blk, rootBlk);		
+	
 		return count;
 	}
 	//total number of blocks to write
@@ -912,7 +995,8 @@ int fs_read(int fd, void *buf, size_t count)
 	if (count < 4096){
 
 			char* tempBuf = malloc(BLOCK_SIZE * sizeof(int8_t));
-			block_read(3, tempBuf);
+			//printf("%d\n",curDescriptor->dataIndices[0]);
+			block_read(superBlock.data_blk, tempBuf);
 			int8_t *buf2 = malloc(count * sizeof(int8_t));
 			for (int i = curDescriptor->lseek ; i< (int)curDescriptor->lseek + (int)count; i++){
 				//printf("%c\n", tempBuf[i]);

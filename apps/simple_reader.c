@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
 
 	ASSERT(!strncmp(data, "mnopqrstuv", 10), "fs_read");
 
+	fs_ls();
 
 	/* Close file and unmount */
 	fs_close(fd);
